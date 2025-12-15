@@ -108,10 +108,10 @@ const scripts = [
   // ✅ RUN EACH SCRIPT
   for (const script of scripts) {
     const shouldRun =
-      script.alwaysRun || (process.env[script.envKey] && process.env[script.envKey] !== '0');
+      script.alwaysRun || (process.env[script.envKey] && process.env[script.envKey] !== 'OFF');
 
     if (!shouldRun) {
-      console.log(`⏭️ ${script.name} skipped (not active or URL = 0)`);
+      console.log(`⏭️ ${script.name} skipped (not active or URL = OFF)`);
       continue;
     }
 
@@ -128,6 +128,7 @@ const scripts = [
   await browser.close();
   console.log(`\n🎉 All scripts done. Browser closed.`);
 })();
+
 
 
 
