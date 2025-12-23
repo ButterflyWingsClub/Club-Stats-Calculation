@@ -8,7 +8,7 @@ function parseNumber(text) {
 }
 
 module.exports = async function runStatsExtractor(page) {
-  const clubUrl = process.env.LP_CLUB_URL;
+  const clubUrl = "https://v3.g.ladypopular.com/guilds.php?id=2888";
 
   console.log("📊 Navigating to club page...");
   await page.goto(clubUrl, { waitUntil: 'domcontentloaded' });
