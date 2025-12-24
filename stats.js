@@ -8,18 +8,45 @@ function parseNumber(text) {
 }
 
 module.exports = async function runStatsExtractor(page) {
-  const clubUrl = "https://v3.g.ladypopular.com/guilds.php?id=2888";
+  const clubUrl = "https://v3.g.ladypopular.com/guilds.php?id=1555";
 
   console.log("📊 Navigating to club page...");
   await page.goto(clubUrl, { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(10000); // wait 10s for full load
 
   // Step 1: Get all member profile URLs
-  let profileUrls = await page.$$eval('#guildMembersList .overview a', links =>
-    links.map(a => a.href).filter(href => href.startsWith('https://v3.g.ladypopular.com/profile.php?id='))
+  let profileUrls = await page.$$eval(
+    '#guildMembersList .overview a',
+    links => links
+      .map(a => a.href)
+      .filter(href => href.startsWith('https://v3.g.ladypopular.com/profile.php?id='))
   );
 
   console.log(`📋 Found ${profileUrls.length} member profiles.`);
+
+  // ===============================
+  // Phase 1A: Club-level inspection
+  // ===============================
+  try {
+    // Club name
+    const clubNameSelector = 'div.guild-name';
+    const clubName = await page.$eval(
+      clubNameSelector,
+      el => el.textContent.trim()
+    );
+
+    // Trophy count (counting bullet items)
+    const trophyCount = await page.$$eval(
+      'div.guild-trophies ul li',
+      trophies => trophies.length
+    );
+
+    console.log("\n🏰 Club Overview:");
+    console.log(`- Name: ${clubName}`);
+    console.log(`- Total Trophies: ${trophyCount}`);
+  } catch (err) {
+    console.log("⚠️ Error extracting club overview:", err.message);
+  }
 
   // Step 2: Loop through each profile
   for (const profileUrl of profileUrls) {
@@ -30,10 +57,14 @@ module.exports = async function runStatsExtractor(page) {
 
       // Extract player name
       const nameSelector = 'p.profile-player-name > span.text-link > strong';
-      const playerName = await page.$eval(nameSelector, el => el.textContent.trim());
+      const playerName = await page.$eval(
+        nameSelector,
+        el => el.textContent.trim()
+      );
 
       // Click the Arena stats tab
-      const arenaTabSelector = '#profilePage > div:nth-child(1) > div.profile-page-top > div.profile-page-nav.makeupBox.bg-g1.br-m > ul > li:nth-child(2)';
+      const arenaTabSelector =
+        '#profilePage > div:nth-child(1) > div.profile-page-top > div.profile-page-nav.makeupBox.bg-g1.br-m > ul > li:nth-child(2)';
       await page.click(arenaTabSelector);
       await page.waitForTimeout(10000); // wait 10s
 
@@ -49,7 +80,8 @@ module.exports = async function runStatsExtractor(page) {
 
       console.log(`\n📈 Stats for ${playerName}:`);
       for (const stat of statSelectors) {
-        const selector = `#profilePage-game > div.profile-page-right > div.makeupBox.profile-main-info.all-info.bg-g2 > div > div.profile-stat-wraper > ${stat.selector}`;
+        const selector =
+          `#profilePage-game > div.profile-page-right > div.makeupBox.profile-main-info.all-info.bg-g2 > div > div.profile-stat-wraper > ${stat.selector}`;
         const value = await page.$eval(selector, el => el.textContent.trim());
         console.log(`- ${stat.name}: ${parseNumber(value)}`);
       }
