@@ -8,7 +8,7 @@ function parseNumber(text) {
 }
 
 module.exports = async function runStatsExtractor(page) {
-  const clubUrl = "https://v3.g.ladypopular.com/guilds.php?id=1555";
+  const clubUrl = "https://v3.g.ladypopular.com/guilds.php?id=3007";
 
   console.log("📊 Navigating to club page...");
   await page.goto(clubUrl, { waitUntil: 'domcontentloaded' });
