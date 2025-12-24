@@ -28,22 +28,32 @@ module.exports = async function runStatsExtractor(page) {
   // Phase 1A: Club-level inspection
   // ===============================
   try {
-    // Club name
-    const clubNameSelector = 'div.guild-name';
-    const clubName = await page.$eval(
-      clubNameSelector,
-      el => el.textContent.trim()
-    );
+    const clubData = await page.evaluate(() => {
+      // ---- Club Name ----
+      const nameEl = document.querySelector("#guildName");
+      const name = nameEl ? nameEl.textContent.trim() : "Unknown";
 
-    // Trophy count (counting bullet items)
-    const trophyCount = await page.$$eval(
-      'div.guild-trophies ul li',
-      trophies => trophies.length
-    );
+      // ---- Trophy numbers ----
+      const trophyEls = document.querySelectorAll("#guildTrophies li.trophy");
+      const trophyNums = [];
+
+      trophyEls.forEach(li => {
+        const cls = Array.from(li.classList).find(c => c.startsWith("trophy-"));
+        if (cls) {
+          const num = parseInt(cls.replace("trophy-", ""), 10);
+          if (!isNaN(num)) trophyNums.push(num);
+        }
+      });
+
+      return { name, trophyNums };
+    });
+
+    const uniqueTrophies = new Set(clubData.trophyNums);
 
     console.log("\n🏰 Club Overview:");
-    console.log(`- Name: ${clubName}`);
-    console.log(`- Total Trophies: ${trophyCount}`);
+    console.log(`- Name: ${clubData.name}`);
+    console.log(`- Total Trophies: ${uniqueTrophies.size}`);
+
   } catch (err) {
     console.log("⚠️ Error extracting club overview:", err.message);
   }
@@ -92,7 +102,6 @@ module.exports = async function runStatsExtractor(page) {
       console.log("⚠️ Error extracting stats for", profileUrl, err.message);
     }
 
-    // Small delay between profiles
     await page.waitForTimeout(2000);
   }
 
