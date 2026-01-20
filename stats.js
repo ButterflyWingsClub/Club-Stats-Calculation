@@ -11,11 +11,11 @@ module.exports = async function runStatsExtractor(page) {
 
   // ✅ ENTER ALL CLUB URLs HERE
   const clubUrls = [
-    "https://v3.g.ladypopular.com/guilds.php?id=6", 
-    "https://v3.g.ladypopular.com/guilds.php?id=21", 
-    "https://v3.g.ladypopular.com/guilds.php?id=3007", 
+    "https://v3.g.ladypopular.com/guilds.php?id=2741", 
+    "https://v3.g.ladypopular.com/guilds.php?id=2415", 
     "https://v3.g.ladypopular.com/guilds.php?id=4733", 
-    "https://v3.g.ladypopular.com/guilds.php?id=24",
+    "https://v3.g.ladypopular.com/guilds.php?id=90", 
+    // "https://v3.g.ladypopular.com/guilds.php?id=24",
     // "https://v3.g.ladypopular.com/guilds.php?id=3007",
     // add up to 7 (or more)
   ];
