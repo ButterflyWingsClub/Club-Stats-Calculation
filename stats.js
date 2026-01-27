@@ -78,33 +78,23 @@ module.exports = async function runStatsExtractor(page) {
         console.log("\n👤 Navigating to profile page:", profileUrl);
         await page.goto(profileUrl, { waitUntil: 'domcontentloaded' });
         await page.waitForTimeout(10000);
+        
+        await page.waitForSelector('.lady-name-wrapper .lady-name');
+        const playerName = await page.locator('.lady-name-wrapper .lady-name').innerText();
 
-        const nameSelector = 'p.profile-player-name > span.text-link > strong';
-        const playerName = await page.$eval(
-          nameSelector,
-          el => el.textContent.trim()
-        );
-
-        const arenaTabSelector =
-          '#profilePage > div:nth-child(1) > div.profile-page-top > div.profile-page-nav.makeupBox.bg-g1.br-m > ul > li:nth-child(2)';
-        await page.click(arenaTabSelector);
-        await page.waitForTimeout(10000);
-
-        const statSelectors = [
-          { name: 'Elegance', selector: 'div:nth-child(1) > div.profile-stat-right > span.stats-value' },
-          { name: 'Creativity', selector: 'div:nth-child(2) > div.profile-stat-right > span.stats-value' },
-          { name: 'Confidence', selector: 'div:nth-child(3) > div.profile-stat-right > span.stats-value' },
-          { name: 'Grace', selector: 'div:nth-child(4) > div.profile-stat-right > span.stats-value' },
-          { name: 'Kindness', selector: 'div:nth-child(5) > div.profile-stat-right > span.stats-value' },
-          { name: 'Loyalty', selector: 'div:nth-child(6) > div.profile-stat-right > span.stats-value' },
-        ];
+        await page.locator('.profile-tab.about').click();
+        await page.waitForSelector('.stats');
 
         console.log(`\n📈 Stats for ${playerName}:`);
-        for (const stat of statSelectors) {
-          const selector =
-            `#profilePage-game > div.profile-page-right > div.makeupBox.profile-main-info.all-info.bg-g2 > div > div.profile-stat-wraper > ${stat.selector}`;
-          const value = await page.$eval(selector, el => el.textContent.trim());
-          console.log(`- ${stat.name}: ${parseNumber(value)}`);
+        const stats = await page.$$eval('.about-stat-item', items =>
+          items.map(item => ({
+            name: item.querySelector('.item-label').textContent.trim(),
+            value: item.querySelector('.item-value').textContent.trim()
+          }))
+        );
+        
+        for (const stat of stats) {
+          console.log(`- ${stat.name}: ${stat.value}`);
         }
 
         console.log(`\n✅ Stats extraction complete for ${playerName}`);
