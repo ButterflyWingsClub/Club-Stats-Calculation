@@ -31,11 +31,10 @@ module.exports = async function runStatsExtractor(page) {
 
     // Step 1: Get all member profile URLs (PER CLUB)
     let profileUrls = await page.$$eval(
-      '#guildMembersList .overview a',
-      links => links
-        .map(a => a.href)
-        .filter(href => href.startsWith('https://v3.g.ladypopular.com/profile.php?id='))
+      '#guildMembersList ul.members a[href*="lady_id="]',
+      links => links.map(a => a.href)
     );
+
 
     console.log(`📋 Found ${profileUrls.length} member profiles.`);
 
