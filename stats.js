@@ -13,6 +13,7 @@ module.exports = async function runStatsExtractor(page) {
   const clubUrls = [
     "https://v3.g.ladypopular.com/guilds.php?id=872",
     "https://v3.g.ladypopular.com/guilds.php?id=1083",
+    "https://v3.g.ladypopular.com/guilds.php?id=4055",
     // add up to 7 (or more)
   ];
 
