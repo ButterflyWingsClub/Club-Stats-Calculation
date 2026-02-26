@@ -77,7 +77,8 @@ module.exports = async function runStatsExtractor(page) {
         await page.waitForTimeout(10000);
         
         await page.waitForSelector('.lady-name-wrapper .lady-name');
-        const playerName = await page.locator('.lady-name-wrapper .lady-name').innerText();
+        // const playerName = await page.locator('.lady-name-wrapper .lady-name').innerText();
+        const playerName = await page.locator('.lady-name-wrapper .lady-name').first().innerText();
 
         await page.locator('.profile-tab.about').click();
         await page.waitForSelector('.stats');
