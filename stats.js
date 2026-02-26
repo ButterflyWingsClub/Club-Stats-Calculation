@@ -11,7 +11,7 @@ module.exports = async function runStatsExtractor(page) {
 
   // ✅ ENTER ALL CLUB URLs HERE
   const clubUrls = [
-    "https://v3.g.ladypopular.com/guilds.php?id=1221",
+    "https://v3.g.ladypopular.com/guilds.php?id=3007", //Butterfly Wings
     // "https://v3.g.ladypopular.com/guilds.php?id=1083",
     // "https://v3.g.ladypopular.com/guilds.php?id=4055",
     // add up to 7 (or more)
