@@ -11,21 +11,7 @@ module.exports = async function runStatsExtractor(page) {
 
   // ✅ ENTER ALL CLUB URLs HERE
   const clubUrls = [
-    "https://v3.g.ladypopular.com/guilds.php?id=2338",
-    "https://v3.g.ladypopular.com/guilds.php?id=134",
-    "https://v3.g.ladypopular.com/guilds.php?id=1555",
-    "https://v3.g.ladypopular.com/guilds.php?id=1094",
-    "https://v3.g.ladypopular.com/guilds.php?id=4996",
-    "https://v3.g.ladypopular.com/guilds.php?id=19",
-    "https://v3.g.ladypopular.com/guilds.php?id=1922",
-    "https://v3.g.ladypopular.com/guilds.php?id=3270",
-    "https://v3.g.ladypopular.com/guilds.php?id=417",
-    "https://v3.g.ladypopular.com/guilds.php?id=26",
-    "https://v3.g.ladypopular.com/guilds.php?id=5095",
-    "https://v3.g.ladypopular.com/guilds.php?id=994",
-    "https://v3.g.ladypopular.com/guilds.php?id=4809",
-    "https://v3.g.ladypopular.com/guilds.php?id=3625",
-    // "https://v3.g.ladypopular.com/guilds.php?id=3007", //Butterfly Wings
+    "https://v3.g.ladypopular.com/guilds.php?id=3007", //Butterfly Wings
     // "https://v3.g.ladypopular.com/guilds.php?id=1083",
     // "https://v3.g.ladypopular.com/guilds.php?id=4055",
     // add up to 7 (or more)
